@@ -43,8 +43,6 @@ namespace PolicyDetails.Controllers
                         response.Status = Enums.Enums.status.Error.ToString();
                         response.Message = "Invalid customer code";
                         return Ok(response);
-                        // Git checkin check.
-                        // Git second checkin.
                     }
                 }
                 else
