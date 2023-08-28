@@ -21,7 +21,7 @@ namespace PolicyDetails.Models
             SqlConnection cnn = new SqlConnection(cnnString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cnn;
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@CustoemerCode", paramPolicyCode));
             cmd.CommandText = "SP_GetPolicyDetails";
             cnn.Open();
