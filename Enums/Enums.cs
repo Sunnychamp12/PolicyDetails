@@ -5,18 +5,14 @@ namespace PolicyDetails.Enums
 {
     public static class Enums
     {
-        public enum status
+        public enum statusCode
         {
-            Success,
-            Error
+            Success = 1,
+            Error = 0
         }
         public enum HeaderValues
         {
-            [EnumString("c06fc4189a5645e4a4fd480e8b1556e7")]
             HeaderToken,
-        }
-        public enum APPName
-        {
             PolicyDetails
         }
     }

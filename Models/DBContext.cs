@@ -8,17 +8,16 @@ namespace PolicyDetails.Models
 {
     public class DBContext : DbContext
     {
+        public static string _strConn = "Server= (local)\\SQLEXPRESS;DataBase=SunnyDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
+        public static DataTable _dt = new DataTable();
         public DBContext(DbContextOptions paramOptions) : base(paramOptions)
         {
         }
         public DbSet<PolicyData> PolicyData { get; set; }
 
-        public List<PolicyData> getPolicyDataList(string paramPolicyCode)
+        public static DataTable getPolicyData(string paramPolicyCode)
         {
-            DataTable dt = new DataTable();
-            string cnnString = "Server= (local)\\SQLEXPRESS;DataBase=SunnyDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
-
-            SqlConnection cnn = new SqlConnection(cnnString);
+            SqlConnection cnn = new SqlConnection(_strConn);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cnn;
             cmd.CommandType = CommandType.StoredProcedure;
@@ -26,14 +25,27 @@ namespace PolicyDetails.Models
             cmd.CommandText = "SP_GetPolicyDetails";
             cnn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(dt);
-            //object o = cmd.ExecuteScalar();
+            adapter.Fill(_dt);
             cnn.Close();
-            List<PolicyData> _objPolicyDataList = ConvertDataTable<PolicyData>(dt);
-
-            return _objPolicyDataList;
+            return _dt;
         }
-        private static List<T> ConvertDataTable<T>(DataTable dt)
+        public static DataTable getPolicyTransactionData(PolicyTransactionRequest paramReqData)
+        {
+            SqlConnection cnn = new SqlConnection(_strConn);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cnn;
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@PolicyNo", paramReqData.PolicyNo));
+            cmd.Parameters.Add(new SqlParameter("@StartDate", paramReqData.StartDate));
+            cmd.Parameters.Add(new SqlParameter("@EndDate", paramReqData.EndDate));
+            cmd.CommandText = "SP_GetPolicyTransaction";
+            cnn.Open();
+            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+            adapter.Fill(_dt);
+            cnn.Close();
+            return _dt;
+        }
+        public static List<T> ConvertDataTable<T>(DataTable dt)
         {
             List<T> data = new List<T>();
             foreach (DataRow row in dt.Rows)
