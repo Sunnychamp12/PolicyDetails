@@ -83,7 +83,7 @@ namespace PolicyDetails.Controllers
                     isValid = (headerToken == _strToken);
                     if (isValid && APPName == _strAppName)
                     {
-                        _objSPC = new SqlParameter[] { new SqlParameter("@AccountNo", paramPolicyData.PolicyNo),
+                        _objSPC = new SqlParameter[] { new SqlParameter("@PolicyNo", paramPolicyData.PolicyNo),
                             new SqlParameter("@StartDate", paramPolicyData.StartDate),
                             new SqlParameter("@EndDate", paramPolicyData.EndDate) };
                         DataTable _dtPolicyDetail = DBContext.GetDataTableSP(_objSPC, "SP_GetPolicyTransaction");
