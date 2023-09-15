@@ -13,7 +13,8 @@ namespace PolicyDetails.Enums
         public enum HeaderValues
         {
             HeaderToken,
-            PolicyDetails
+            PolicyDetails,
+            APPName
         }
     }
 }

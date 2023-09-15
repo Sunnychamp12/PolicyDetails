@@ -1,4 +1,6 @@
-﻿namespace PolicyDetails.Models
+﻿using PolicyDetails.Models.Account;
+
+namespace PolicyDetails.Models
 {
     public class SuccessResponse
     {
@@ -14,5 +16,10 @@
     {
         public int Status { get; set; }
         public List<CustomerDetails> customerDetails { get; set; }
+    }
+    public class GetAccountTransactionResponse
+    {
+        public int Status { get; set; }
+        public AccountDetail accountDetails { get; set; }
     }
 }

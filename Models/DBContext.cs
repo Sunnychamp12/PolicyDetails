@@ -8,37 +8,53 @@ namespace PolicyDetails.Models
 {
     public class DBContext : DbContext
     {
-        public static string _strConn = "Server= (local)\\SQLEXPRESS;DataBase=SunnyDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
+        public static string _strConn = "Server= (local)\\SQLEXPRESS;DataBase=TransactionDB;trusted_connection=True;Encrypt=False;MultipleActiveResultSets=True;";
         public static DataTable _dt = new DataTable();
         public DBContext(DbContextOptions paramOptions) : base(paramOptions)
         {
         }
         public DbSet<PolicyData> PolicyData { get; set; }
 
-        public static DataTable getPolicyData(string paramPolicyCode)
+        //public static DataTable getPolicyData(string paramPolicyCode)
+        //{
+        //    SqlConnection cnn = new SqlConnection(_strConn);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = cnn;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.Add(new SqlParameter("@CustoemerCode", paramPolicyCode));
+        //    cmd.CommandText = "SP_GetPolicyDetails";
+        //    cnn.Open();
+        //    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        //    adapter.Fill(_dt);
+        //    cnn.Close();
+        //    return _dt;
+        //}
+        //public static DataTable getPolicyTransactionData(PolicyTransactionRequest paramReqData)
+        //{
+        //    SqlConnection cnn = new SqlConnection(_strConn);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = cnn;
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.Add(new SqlParameter("@PolicyNo", paramReqData.PolicyNo));
+        //    cmd.Parameters.Add(new SqlParameter("@StartDate", paramReqData.StartDate));
+        //    cmd.Parameters.Add(new SqlParameter("@EndDate", paramReqData.EndDate));
+        //    cmd.CommandText = "SP_GetPolicyTransaction";
+        //    cnn.Open();
+        //    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+        //    adapter.Fill(_dt);
+        //    cnn.Close();
+        //    return _dt;
+        //}
+        public static DataTable GetDataTableSP(SqlParameter[] paramSP, string paramSPName)
         {
+            _dt = new DataTable();
             SqlConnection cnn = new SqlConnection(_strConn);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cnn;
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@CustoemerCode", paramPolicyCode));
-            cmd.CommandText = "SP_GetPolicyDetails";
-            cnn.Open();
-            SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-            adapter.Fill(_dt);
-            cnn.Close();
-            return _dt;
-        }
-        public static DataTable getPolicyTransactionData(PolicyTransactionRequest paramReqData)
-        {
-            SqlConnection cnn = new SqlConnection(_strConn);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cnn;
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add(new SqlParameter("@PolicyNo", paramReqData.PolicyNo));
-            cmd.Parameters.Add(new SqlParameter("@StartDate", paramReqData.StartDate));
-            cmd.Parameters.Add(new SqlParameter("@EndDate", paramReqData.EndDate));
-            cmd.CommandText = "SP_GetPolicyTransaction";
+            foreach (SqlParameter param in paramSP)
+                cmd.Parameters.Add(new SqlParameter(param.ParameterName, param.Value));
+            cmd.CommandText = paramSPName;
             cnn.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(cmd);
             adapter.Fill(_dt);
